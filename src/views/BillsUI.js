@@ -20,7 +20,14 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+  if (!data) return "" //avoid error : "TypeError: data is not iterable"
+  const dataDate = [...data]
+  dataDate.sort((a,b)=> {
+    const aNewDate = new Date(a.date)
+    const bNewDate = new Date(b.date)
+    return bNewDate > aNewDate ? 1 : -1
+  })
+  return (dataDate && dataDate.length) ? dataDate.map(bill => row(bill)).join("") : ""
 }
 
 export default ({ data: bills, loading, error }) => {
