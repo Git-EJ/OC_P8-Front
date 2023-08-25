@@ -33,14 +33,15 @@ export default class NewBill {
 
     const isValidFileNameExtension = ['jpg', 'jpeg', 'png']
 
-    // [TODO] si bon format mais pas de validation, apparait en null dans les notes de frais
+    // TODO si bon format mais pas de validation, apparait en null dans les notes de frais
+
     
     if (!isValidFileNameExtension.includes(fileNameExtension)) {
       const fileField = this.document.getElementById('new-bill_input-file')
-      fileField.setCustomValidity('Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG.');
-      return (console.error('☢️🚨🚨🚨☢️ALERTTTTEEEEEEEE - Extension de fichier non valide☢️🚨🚨🚨☢️'))
+      fileField.setCustomValidity('Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG');
+      return (console.error('☢️🚨🚨🚨☢️警報 - 文件擴展名無效☢️🚨🚨🚨☢️'))
     }
-    
+
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)

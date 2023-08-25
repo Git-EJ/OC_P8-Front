@@ -34,17 +34,17 @@ export default () => {
                     <input required type="date" class="form-control blue-border" data-testid="datepicker" />
                   </div>
                   <div class="col-half">
-                    <label for="amount" class="bold-label">Montant TTC </label>
-                    <input required type="number" class="form-control blue-border input-icon input-icon-right" data-testid="amount" placeholder="348"/>
+                    <label for="amount" class="bold-label">Montant TTC  </label>
+                    <input required type="number" class="form-control blue-border input-icon input-icon-right" data-testid="amount" placeholder="348 €"/>
                   </div>
                   <div class="col-half-row">
                     <div class="flex-col"> 
                       <label for="vat" class="bold-label">TVA</label>
-                      <input type="number" class="form-control blue-border" data-testid="vat" placeholder="70" />
+                      <input type="number" class="form-control blue-border" data-testid="vat" placeholder="70 €" />
                     </div>
                     <div class="flex-col">
                       <label for="pct" class="white-text">%</label>
-                      <input required type="number" class="form-control blue-border" data-testid="pct" placeholder="20" />
+                      <input required type="number" class="form-control blue-border" data-testid="pct" placeholder="20%" />
                     </div>
                   </div>
                 </div>
@@ -54,8 +54,8 @@ export default () => {
                     <textarea class="form-control blue-border" data-testid="commentary" rows="3"></textarea>
                   </div>
                   <div class="col-half">
-                    <label for="file" class="bold-label">Justificatif</label>
-                    <input required type="file" id="new-bill_input-file" class="form-control blue-border" data-testid="file" />
+                    <label for="file" class="bold-label">Justificatif <span class="new-bill_input-file-label">(Format: jpg, jpeg, png)</span></label>
+                    <input required type="file" id="new-bill_input-file" class="form-control blue-border" data-testid="file" accept=".jpg, .jpeg, .png" />
                   </div>
                 </div>
             </div>
