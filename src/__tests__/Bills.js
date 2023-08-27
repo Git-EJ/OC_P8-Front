@@ -29,11 +29,47 @@ describe("Given I am connected as an employee", () => {
 
     })
     test("Then bills should be ordered from earliest to latest", () => {
+
       document.body.innerHTML = BillsUI({ data: bills })
-      const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
+      // const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
+      const dates = screen.getAllByText(/^([1-9]|[12][0-9]|3[01])[- /.]([A-Za-zÀ-ÖØ-öø-ÿ]{3})[.][- /.](\d\d)$/i).map(a => a.innerHTML)
+
+      const monthMap = {
+        "Jan.": "Jan",
+        "Fév.": "Feb",
+        "Mar.": "Mar",
+        "Avr.": "Apr",
+        "Mai.": "May",
+        "Jui.": "Jun",
+        "Jul.": "Jul",
+        "Aoû.": "Aug",
+        "Sep.": "Sep",
+        "Oct.": "Oct",
+        "Nov.": "Nov",
+        "Déc.": "Dec",
+      }
+      
+      const formatDates = dates.map(d => {
+        console.log("d===", d)
+        const parts = d.split(' ')
+        const day = parts[0];
+        const month = monthMap[parts[1]]
+        const year = parts[2]
+      
+        const newDate = new Date(`${day} ${month} ${year}`).getTime()
+        console.log('NewDate ===', newDate)
+        return newDate;
+      })
+      
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-      const datesSorted = [...dates].sort(antiChrono)
-      expect(dates).toEqual(datesSorted)
+      const datesSorted = [...formatDates].sort(antiChrono)
+      console.log("DATES !!!!!!!!", dates)
+      console.log("FORMAT-DATES !!!!!!!!", formatDates)
+      console.log("DATES-SORTED !!!!!!!!", datesSorted)
+      expect(formatDates).toEqual(datesSorted)
     })
   })
 })
+
+
+
