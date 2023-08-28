@@ -17,9 +17,34 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const input = this.document.querySelector(`input[data-testid="file"]`)
+    input.parentElement.querySelector(".error").textContent=""
+    const file = input.files[0]
+    console.log('file ===', file)
     const filePath = e.target.value.split(/\\/g)
+    console.log('filePath ===', filePath)
     const fileName = filePath[filePath.length-1]
+    console.log('filename ===', fileName)
+    
+
+    const fileNameSplit = fileName.split('.')
+    console.log('filenameSplit ===', fileName.split('.'))
+
+    const fileNameExtension = fileNameSplit[fileNameSplit.length-1]
+    console.log('fileNameExtension ===', fileNameExtension)
+
+    const isValidFileNameExtension = ['jpg', 'jpeg', 'png']
+
+    // TODO si bon format mais pas de validation, apparait en null dans les notes de frais
+
+    
+    if (!isValidFileNameExtension.includes(fileNameExtension)) {
+      const input = this.document.getElementById('new-bill_input-file')
+      input.value = null
+      input.parentElement.querySelector(".error").textContent="Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG"
+      return
+    }
+
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
