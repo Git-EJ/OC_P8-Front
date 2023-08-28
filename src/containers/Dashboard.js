@@ -85,25 +85,32 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
-  handleEditTicket(e, bill, bills) {
+  handleEditTicket(e, bill, bills, showCounter) {
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
-    if (this.counter % 2 === 0) {
+    if (this.counter % 2 === 0) { //vérifie si nombre pair
       bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
-      this.counter ++
-    } else {
+      this.counter++
+      console.log("Edit-IF this.counter ===", this.counter)
+      console.log('Show-Counter', showCounter)
+      // console.log('e' , e)
+      // console.log('bill', bill)
+      // console.log('bills', bills)
+    } 
+    else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
 
       $('.dashboard-right-container div').html(`
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
-      $('.vertical-navbar').css({ height: '120vh' })
-      this.counter ++
+      $('.vertical-navbar').css({ height: '150vh' }) //MODIF 120 => 150
+      this.counter++
+      console.log("Edit-Else this.counter ===", this.counter)
     }
     $('#icon-eye-d').click(this.handleClickIconEye)
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
@@ -138,19 +145,20 @@ export default class {
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
       this.counter ++
+      console.log("Show-IF counter ===", this.counter)
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
       this.counter ++
+      console.log("Show-ELSE 2 counter ===", this.counter)
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
+      const openBillElement = $(`#open-bill${bill.id}`)
+      openBillElement.off('click') // supprime "le compteur" de click précédent
+      openBillElement.click((e) => this.handleEditTicket(e, bill, bills, this.counter)) // créer un nouveau "compteur de click"
     })
-
-    return bills
-
   }
 
   getBillsAllUsers = () => {
@@ -182,7 +190,7 @@ export default class {
       .bills()
       .update({data: JSON.stringify(bill), selector: bill.id})
       .then(bill => bill)
-      .catch(console.log)
+      .catch(console.log('toto'))
     }
   }
 }
