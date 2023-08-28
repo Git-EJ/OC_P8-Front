@@ -32,7 +32,7 @@ describe("Given I am connected as an employee", () => {
 
       document.body.innerHTML = BillsUI({ data: bills })
       // const dates = screen.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML)
-      const dates = screen.getAllByText(/^([1-9]|[12][0-9]|3[01])[- /.]([A-Za-zÀ-ÖØ-öø-ÿ]{3})[.][- /.](\d\d)$/i).map(a => a.innerHTML)
+      const dates = screen.getAllByText(/^([1-9]|[12][0-9]|3[01])[- /.]([A-Za-zÀ-ÖØ-öø-ÿ]{3})[.][- /.](\d{4})$/i).map(a => a.innerHTML)
 
       const monthMap = {
         "Jan.": "Jan",
