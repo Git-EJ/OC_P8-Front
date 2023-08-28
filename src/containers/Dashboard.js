@@ -72,9 +72,9 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
-    $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
-    $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
+    $('#arrow-icon1').on('click', ((e) => this.handleShowTickets(e, bills, 1)))
+    $('#arrow-icon2').on('click', ((e) => this.handleShowTickets(e, bills, 2)))
+    $('#arrow-icon3').on('click', ((e) => this.handleShowTickets(e, bills, 3)))
     new Logout({ localStorage, onNavigate })
   }
 
@@ -110,11 +110,12 @@ export default class {
       `)
       $('.vertical-navbar').css({ height: '150vh' }) //MODIF 120 => 150
       this.counter++
-      console.log("Edit-Else this.counter ===", this.counter)
+      console.log("Edione this.counter ===", this.counter)
     }
-    $('#icon-eye-d').click(this.handleClickIconEye)
-    $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
-    $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
+
+    $('#icon-eye-d').on('click', (this.handleClickIconEye))
+    $('#btn-accept-bill').on('click', ((e) => this.handleAcceptSubmit(e, bill)))
+    $('#btn-refuse-bill').on('click', ((e) => this.handleRefuseSubmit(e, bill)))
   }
 
   handleAcceptSubmit = (e, bill) => {
@@ -155,9 +156,10 @@ export default class {
     }
 
     bills.forEach(bill => {
+      const that = this
       const openBillElement = $(`#open-bill${bill.id}`)
-      openBillElement.off('click') // supprime "le compteur" de click précédent
-      openBillElement.click((e) => this.handleEditTicket(e, bill, bills, this.counter)) // créer un nouveau "compteur de click"
+      openBillElement.off('click') // supprime "le compteur de click" existant
+      openBillElement.on('click', ((e) => that.handleEditTicket(e, bill, bills, that.counter))) // créer un nouveau "compteur de click"
     })
   }
 
