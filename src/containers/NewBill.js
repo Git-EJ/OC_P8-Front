@@ -17,7 +17,9 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const input = this.document.querySelector(`input[data-testid="file"]`)
+    input.parentElement.querySelector(".error").textContent=""
+    const file = input.files[0]
     console.log('file ===', file)
     const filePath = e.target.value.split(/\\/g)
     console.log('filePath ===', filePath)
@@ -37,9 +39,10 @@ export default class NewBill {
 
     
     if (!isValidFileNameExtension.includes(fileNameExtension)) {
-      const fileField = this.document.getElementById('new-bill_input-file')
-      fileField.setCustomValidity('Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG');
-      return (console.error('☢️🚨🚨🚨☢️警報 - 文件擴展名無效☢️🚨🚨🚨☢️'))
+      const input = this.document.getElementById('new-bill_input-file')
+      input.value = null
+      input.parentElement.querySelector(".error").textContent="Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG"
+      return
     }
 
     const formData = new FormData()
