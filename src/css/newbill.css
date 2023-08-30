@@ -66,3 +66,8 @@ textarea:focus, input:focus, select:focus {
   color: #0E5AE5 !important;
   font-size: 0.8em;
 }
+
+.new-bill_input-file_extension-error-message {
+  color: red;
+  font-size: 0.9em;
+}
