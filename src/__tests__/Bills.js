@@ -92,7 +92,7 @@ describe("Given I am connected as an employee", () => {
       expect(formatDates).toEqual(datesSorted)
     })
   })
-
+// TODO instanceTEST
   test("handleClickNewBill is call when the btn new bill is click", () => {
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
     if ( typeof jest !== 'undefined') $.fn.onNavigate = jest.fn()
