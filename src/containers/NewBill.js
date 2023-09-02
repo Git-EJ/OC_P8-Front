@@ -34,6 +34,7 @@ export default class NewBill {
       input.parentElement.querySelector(".new-bill_input-file_extension-error-message").textContent="Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG"
       return
     }
+     // TODO si bon format mais pas de validation, apparait en null dans les notes de frais
 
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
