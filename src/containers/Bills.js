@@ -2,6 +2,15 @@ import { ROUTES_PATH } from '../constants/routes.js'
 import { formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
+
+// //START DEV
+// import { mockStore } from '../__mocks__/test-store.js'
+// mockStore().then((mockedBills) => {
+//   console.log(mockedBills[0].id)
+// })
+//END DEV
+
+
 export default class {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document

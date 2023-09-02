@@ -21,16 +21,11 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  console.log('data ===', data)
   if (!data) return "" //avoid error : "TypeError: data is not iterable"
   const dataDate = [...data]
-  console.log('dataDate ===', dataDate)
   dataDate.sort((a,b)=> { 
-    console.log('a.date ===', a.date)
     const aNewDate = new Date(a.date).getTime()
-    console.log('aNewDate ===', aNewDate + '  ' + a.id)
     const bNewDate = new Date(b.date).getTime()
-    console.log('bNewDate ===', bNewDate + '  ' + b.id)
     return bNewDate - aNewDate
   })
   return dataDate.map(bill => row(bill)).join("")

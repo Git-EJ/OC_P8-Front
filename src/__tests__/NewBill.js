@@ -9,6 +9,8 @@ import { ROUTES, ROUTES_PATH } from "../constants/routes.js"
 import { localStorageMock } from "../__mocks__/localStorage.js"
 import router from "../app/Router.js"
 import userEvent from '@testing-library/user-event';
+// import { mockStore } from '../__mocks__/test-store.js';
+import store from '../__mocks__/store.js';
 
 
 let context;
@@ -17,25 +19,25 @@ let instance;
 describe("Given I am connected as an employee", () => {
   describe("When I am on NewBill Page", () => {
 
-  //   context = {
-  //     document: document, // simule les interactions DOM
-  //     onNavigate: path => { document.body.innerHTML = ROUTES({ pathname:path, data: [] }) }, // simule la navigation en prenant un chemin "path" et modifie le contenu de la page
-  //     store : null, // objet simulé, agit comme un magasin de données
-  //     localStorage: window.localStorage,
-  //   }
-  //   beforeEach (()=>{
-  //     onNavigate = context.onNavigate
-  //     instance = new NewBill(context)
-  //     document.body.innerHTML = NewBillUI()
-  //     context.localStorage
-  //  })
-    // afterEach (()=> {
-    //  onNavigate = null
-    //  instance =  null 
-    //  document.body.innerHTML = null
-    //  context.localStorage.clear()
-  //    jest.restoreAllMocks()
-  //  })
+    //   context = {
+    //     document: document, // simule les interactions DOM
+    //     onNavigate: path => { document.body.innerHTML = ROUTES({ pathname:path, data: [] }) }, // simule la navigation en prenant un chemin "path" et modifie le contenu de la page
+    //     store : null, // objet simulé, agit comme un magasin de données
+    //     localStorage: window.localStorage,
+    //   }
+    //   beforeEach (()=>{
+    //     onNavigate = context.onNavigate
+    //     instance = new NewBill(context)
+    //     document.body.innerHTML = NewBillUI()
+    //     context.localStorage
+    //  })
+      // afterEach (()=> {
+      //  onNavigate = null
+      //  instance =  null 
+      //  document.body.innerHTML = null
+      //  context.localStorage.clear()
+    //    jest.restoreAllMocks()
+    //  })
     
     test("Then newBill icon in vertical layout should be highlighted", async () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
@@ -81,7 +83,9 @@ describe("Given I am connected as an employee", () => {
       expect(handleChangeFileFn).toHaveBeenCalledTimes(1)
     })
 
-    test("JPG", () => {
+    // TODO wrong/good file
+
+    test("Proof : test allowed upload type files : JPG, JPEG, PNG", () => {
       context = {
         document: document, // simule les interactions DOM
         onNavigate: path => { document.body.innerHTML = ROUTES({ pathname:path, data: [] }) }, // simule la navigation en prenant un chemin "path" et modifie le contenu de la page
@@ -107,6 +111,52 @@ describe("Given I am connected as an employee", () => {
       // expect ($('#file-error').css('display')).toBe('block')
       // expect(error.style.display).toBe('block')
     })
+ 
+
+
+    test("Submit, function handleSubmit", async () => {
+      context = {
+        document: document, // simule les interactions DOM
+        onNavigate: path => { document.body.innerHTML = ROUTES({ pathname:path, data: [] }) }, // simule la navigation en prenant un chemin "path" et modifie le contenu de la page
+        store : store, // objet simulé, agit comme un magasin de données
+        // store : null, // objet simulé, agit comme un magasin de données
+        localStorage: window.localStorage,
+      } 
+
+      onNavigate = context.onNavigate
+      instance = new NewBill(context)
+      document.body.innerHTML = NewBillUI()
+      context.localStorage
+
+      // All the input in the newBill form
+      const expenseType = screen.getByTestId("expense-type")
+      const expenseName = screen.getByTestId("expense-name")
+      const datepicker= screen.getByTestId("datepicker")
+      const amount = screen.getByTestId("amount")
+      const vat = screen.getByTestId("vat")
+      const pct = screen.getByTestId("pct")
+      const commentary = screen.getByTestId("commentary")
+      const file = screen.getByTestId("file")
+
+      /////////// MOCKED TEST STORE ///////////
+      // // mocked data from __mock__store.js through test-store.js
+      // let mockedName;
+
+      // mockStore().then((mockedBills) => {
+      //   mockedName = mockedBills[0].name
+      // })
+
+      /////////// MOCKED STORE  ///////////
+      let mockedName;
+
+      await store.bills().list().then((bill) => {
+        mockedName = bill[0].name
+      })
+      
+      userEvent.type(expenseName, mockedName)
+    
+      expect(expenseName.value).toBe(mockedName)
+    })
   })
 })
 
@@ -118,3 +168,4 @@ describe("Given I am connected as an employee", () => {
 // tester POST handleSubmit
 // quand je clique sur envoyé je reviens sur la page bills
 // Uncovered lines 38-56,59-76,81-88
+// tester L'ID, status etc...???
