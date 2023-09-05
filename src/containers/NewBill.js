@@ -22,7 +22,7 @@ export default class NewBill {
     input.parentElement.querySelector(".new-bill_input-file_extension-error-message").textContent=""
     const file = input.files[0]
     const filePath = e.target.value.split(/\\/g)
-    const fileName = filePath[filePath.length-1]
+    const fileName = filePath[filePath.length-1] 
 
     const fileNameSplit = fileName.split('.')
     const fileNameExtension = fileNameSplit[fileNameSplit.length-1]
@@ -33,7 +33,11 @@ export default class NewBill {
       input.value = null
       input.parentElement.querySelector(".new-bill_input-file_extension-error-message").textContent="Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG"
       return
+      
+    } else {
+      input.parentElement.querySelector(".new-bill_input-file_name-message").textContent = file.name
     }
+
      // TODO si bon format mais pas de validation, apparait en null dans les notes de frais
 
     const formData = new FormData()

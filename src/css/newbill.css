@@ -71,3 +71,8 @@ textarea:focus, input:focus, select:focus {
   color: red;
   font-size: 0.9em;
 }
+
+.new-bill_input-file_name-message {
+  color: green;
+  font-size: 0.9em;
+}
