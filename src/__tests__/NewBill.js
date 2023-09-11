@@ -311,7 +311,7 @@ describe("Given I am connected as an employee", () => {
         const spyUpdateBill = jest.spyOn(bill, 'updateBill')
         
         form.addEventListener('submit', spyHandleSubmit)
-        userEvent.click(submitBtn
+        userEvent.click(submitBtn)
         expect(spyHandleSubmit).toHaveBeenCalledTimes(1)
         expect(spyUpdateBill).toHaveBeenCalledTimes(2) // TODO why "2 call"
         expect(spyOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['Bills'])// TODO why "2 call"
