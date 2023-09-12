@@ -10,6 +10,7 @@ import { localStorageMock } from "../__mocks__/localStorage.js";
 import router from "../app/Router.js";
 import Bills from "../containers/Bills.js";
 import userEvent from "@testing-library/user-event";
+import store from "../__mocks__/store.js";
 
 let context;
 let instance;
@@ -30,16 +31,11 @@ describe("Given I am connected as an employee", () => {
       context.localStorage
    })
     afterEach (()=> {
-    //  onNavigate = null
-    //  instance =  null 
-    //  document.body.innerHTML = null
-     context.localStorage.clear()
-     jest.restoreAllMocks()
+     jest.clearAllMocks()
    })
 
     test("Then bill icon in vertical layout should be highlighted", async () => {
       
-
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee'
@@ -76,14 +72,14 @@ describe("Given I am connected as an employee", () => {
       }
       
       const formatDates = dates.map(d => {
-        console.log("d===", d)
+        // console.log("d===", d)
         const parts = d.split(' ')
         const day = parts[0];
         const month = monthMap[parts[1]]
         const year = parts[2]
       
         const newDate = new Date(`${day} ${month} ${year}`).getTime()
-        console.log('NewDate ===', newDate)
+        // console.log('NewDate ===', newDate)
         return newDate;
       })
       
@@ -107,6 +103,7 @@ describe("Given I am connected as an employee", () => {
     buttonNewBill.addEventListener('click', handleClickNewBillFn)
     userEvent.click(buttonNewBill)
     expect(handleClickNewBillFn).toHaveBeenCalledTimes(1)
+    buttonNewBill.removeEventListener('click', handleClickNewBillFn)
   })
 
   test("handleClickOnEye is call when the iconEye is click", () => {
@@ -116,6 +113,7 @@ describe("Given I am connected as an employee", () => {
       icon.addEventListener('click', handleClickIconEyeFn)
       userEvent.click(icon)
       expect(handleClickIconEyeFn).toHaveBeenCalledTimes(1)
+      icon.removeEventListener('click', handleClickIconEyeFn)
   })
 
   test("when I click on the icon eye, the proof (invoice) must be displayed in a modal", () => { 

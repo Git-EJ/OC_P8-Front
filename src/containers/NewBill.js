@@ -39,7 +39,6 @@ export default class NewBill {
     console.log('10 fileNameExtension', fileNameExtension)
     const isValidFileNameExtension = ['jpg', 'jpeg', 'png']
     console.log('11 isValidFileNameExtension', isValidFileNameExtension )
-    // const isValidFileNameExtension = /.+png$|.+jpeg$|.+jpg$/i;
 
     const errorMessage = this.document.querySelector(".new-bill_input-file_extension-error-message")
     console.log('12 errorMessage', errorMessage)
@@ -56,8 +55,9 @@ export default class NewBill {
 
      // TODO si bon format mais pas de validation, apparait en null dans les notes de frais
 
+
     const formData = new FormData() // créer un objet formData avec paires key/value
-    const email = JSON.parse(localStorage.getItem("user")).email //extrait l'objet 
+    const email = JSON.parse(localStorage.getItem("user")).email 
     console.log(email)
     console.log(file)
 
@@ -65,20 +65,25 @@ export default class NewBill {
     formData.append('email', email)
     console.log(formData)
 
-    this.store // app/store.js >>> crée une bills avec le fichier et l'email et .then renvoie une 
+    this.store 
       .bills() 
-      .create({ //appelle create (class ApiEntity) avec un objet bills, bills est une instance de ApiEntity
+      // console.log('bills', this.store.bills())
+      .create({ 
         data: formData,
         headers: {
           noContentType: true
         }
       })
       .then(({fileUrl, key}) => {
-        // console.log(fileUrl)
+        console.log('FUrl',fileUrl)
+        console.log('KEY',key)
+        console.log('FName',fileName)
         this.billId = key  
         this.fileUrl = fileUrl
         this.fileName = fileName
-      }).catch(error => console.error(error))
+      // }).catch(error => console.error(error))
+      })
+      .catch(error => console.error('===================CATCH handleChangeFile====================', error))
   }
   handleSubmit = e => {
     e.preventDefault()
@@ -97,20 +102,20 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
+    console.log('BILL', bill)
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
   }
 
   // not need to cover this function by tests
   updateBill = (bill) => {
-    if (this.store) {
-      this.store
-      .bills()
-      .update({data: JSON.stringify(bill), selector: this.billId})
-      .then(() => {
-        this.onNavigate(ROUTES_PATH['Bills'])
-      })
-      .catch(error => console.error(error))
-    }
+
+    this.store && this.store
+    .bills()
+    .update({data: JSON.stringify(bill), selector: this.billId})
+    .then(() => {
+      this.onNavigate(ROUTES_PATH['Bills'])
+    })
+    .catch(error => console.error('===================CATCH HandleSubmit====================', error))
   }
 }
