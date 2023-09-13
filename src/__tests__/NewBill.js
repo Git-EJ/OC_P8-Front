@@ -25,21 +25,21 @@ const setContext = (ctx) => {
 }
 
 describe("Given I am connected as an employee", () => {
-  describe("When I am on NewBill Page", ()=> {
- 
-    beforeAll(()=> {
-      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
-      window.localStorage.setItem('user', JSON.stringify({
-        type: 'Employee',
-      }))
-      
-      const root = document.createElement("div")
-      root.setAttribute("id", "root")
-      document.body.append(root)
-      router()
-      window.onNavigate(ROUTES_PATH.NewBill)
-    })
+  beforeAll(()=> {
+    Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+    window.localStorage.setItem('user', JSON.stringify({
+      type: 'Employee',
+    }))
+    
+    const root = document.createElement("div")
+    root.setAttribute("id", "root")
+    document.body.append(root)
+    router()
+    window.onNavigate(ROUTES_PATH.NewBill)
+  })
 
+  
+  describe("When I am on NewBill Page", ()=> {
 
     test("Then newBill icon in vertical layout should be highlighted", async () => {
       await waitFor(() => screen.getByTestId('icon-mail'))
@@ -47,8 +47,14 @@ describe("Given I am connected as an employee", () => {
       expect(windowIcon.classList).toBeTruthy()
       expect(windowIcon.classList.contains('active-icon')).toBe(true)
     })
-  })
 
+    test("Then bill icon in vertical layout should be not highlighted", async () => {
+      await waitFor(() => screen.getByTestId('icon-window'))
+      const windowIcon = screen.getByTestId('icon-window')
+      expect(windowIcon.classList).toBeTruthy()
+      expect(windowIcon.classList.contains('active-icon')).toBe(false)
+    })
+  })
 
 
   describe("When I am on NewBill Page", ()=> {
@@ -73,15 +79,13 @@ describe("Given I am connected as an employee", () => {
       })
       document.body.innerHTML = NewBillUI()
     })
-
+    
     afterEach(() => {
       jest.clearAllMocks() // Réinitialise tous les espions et les appels de fonction simulés
       // jest.resetAllMocks() // Réinitialise les mocks de fonctions seulement
     })
-
     
-
-
+    
     test("Proof : test allowed upload type files : JPG, JPEG, PNG", async () => {
       const newBill = new NewBill(context)
       const btn = screen.getByTestId("file")
@@ -281,6 +285,7 @@ describe("Given I am connected as an employee", () => {
       console.error = jest.fn()
       await waitFor(() => expect(console.error).toHaveBeenCalledTimes(2))
       await waitFor(() => {
+        // .toHaveBeenNthCalledWith vérifie les appels à des positions spécifiques
         expect(console.error).toHaveBeenNthCalledWith(
           1,"===================CATCH HandleSubmit====================","mockedError"
         )

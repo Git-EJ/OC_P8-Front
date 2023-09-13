@@ -3,21 +3,15 @@ import { formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
 
-// //START DEV
-// import { mockStore } from '../__mocks__/test-store.js'
-// mockStore().then((mockedBills) => {
-//   console.log(mockedBills[0].id)
-// })
-//END DEV
-
-
 export default class {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
     if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
+   
     const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
     if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconEye(icon))
@@ -42,13 +36,16 @@ export default class {
       .bills()
       .list()
       .then(snapshot => {
-        const bills = snapshot
+        const bills = snapshot // liste de factures 
           .map(doc => {
             try {
+              console.log('docs ===', doc)
+              console.log('date ===', doc.date)
+              console.log('status ===', doc.status)
               return {
                 ...doc,
                 date: doc.date, //formatDate(doc.date),
-                status: formatStatus(doc.status)
+                status: formatStatus(doc.status),
               }
             } catch(e) {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
@@ -61,7 +58,7 @@ export default class {
               }
             }
           })
-          console.log('length', bills.length)
+          console.log('bills length ===', bills.length)
         return bills
       })
     }

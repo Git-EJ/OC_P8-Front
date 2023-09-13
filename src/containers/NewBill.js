@@ -18,38 +18,38 @@ export default class NewBill {
   
   handleChangeFile = e => {
     e.preventDefault()
-    console.log('1 e ==========', e)
-    console.log('1-1 e.target ==========', e.target)
-    console.log('1-2 e.target.value ==========', e.target.value)
+    // console.log('1 e ==========', e)
+    // console.log('1-1 e.target ==========', e.target)
+    // console.log('1-2 e.target.value ==========', e.target.value)
     const input = this.document.querySelector(`input[data-testid="file"]`)
-    console.log('2 e.target === input >>>', e.target === input)
-    console.log('4 e.target.value ==========', e.target.value)
+    // console.log('2 e.target === input >>>', e.target === input)
+    // console.log('4 e.target.value ==========', e.target.value)
 
-    console.log('5 input', input )
+    // console.log('5 input', input )
     const file = input.files[0]
-    console.log('6 file', file)
+    // console.log('6 file', file)
     const filePath = e.target.value.split(/\\/g)
-    console.log('7 filePath', filePath )
+    // console.log('7 filePath', filePath )
     const fileName = filePath[filePath.length-1] 
-    console.log('8 fileName', fileName )
+    // console.log('8 fileName', fileName )
     
     const fileNameSplit = fileName.split('.')
-    console.log('9 fileNameSplit', fileNameSplit )
+    // console.log('9 fileNameSplit', fileNameSplit )
     const fileNameExtension = fileNameSplit[fileNameSplit.length-1]
-    console.log('10 fileNameExtension', fileNameExtension)
+    // console.log('10 fileNameExtension', fileNameExtension)
     const isValidFileNameExtension = ['jpg', 'jpeg', 'png']
-    console.log('11 isValidFileNameExtension', isValidFileNameExtension )
+    // console.log('11 isValidFileNameExtension', isValidFileNameExtension )
 
     const errorMessage = this.document.querySelector(".new-bill_input-file_extension-error-message")
-    console.log('12 errorMessage', errorMessage)
+    // console.log('12 errorMessage', errorMessage)
 
     if (!isValidFileNameExtension.includes(fileNameExtension)) {
       input.value = null
       errorMessage.classList.remove('hidden')
-      console.log('----------------IF-------------------')
+      // console.log('----------------IF-------------------')
       return
     } 
-    console.log('!!!!!!!!!!!!!!!!!!!!!ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+    // console.log('!!!!!!!!!!!!!!!!!!!!!ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     errorMessage.classList.add('hidden')
     
 
@@ -58,12 +58,12 @@ export default class NewBill {
 
     const formData = new FormData() // créer un objet formData avec paires key/value
     const email = JSON.parse(localStorage.getItem("user")).email 
-    console.log(email)
-    console.log(file)
+    // console.log(email)
+    // console.log(file)
 
     formData.append('file', file) //.append ajoute à l'objet formData key/value
     formData.append('email', email)
-    console.log(formData)
+    // console.log(formData)
 
     this.store 
       .bills() 
@@ -75,9 +75,9 @@ export default class NewBill {
         }
       })
       .then(({fileUrl, key}) => {
-        console.log('FUrl',fileUrl)
-        console.log('KEY',key)
-        console.log('FName',fileName)
+        // console.log('FUrl',fileUrl)
+        // console.log('KEY',key)
+        // console.log('FName',fileName)
         this.billId = key  
         this.fileUrl = fileUrl
         this.fileName = fileName
@@ -102,7 +102,7 @@ export default class NewBill {
       fileName: this.fileName,
       status: 'pending'
     }
-    console.log('BILL', bill)
+    // console.log('BILL', bill)
     this.updateBill(bill)
     this.onNavigate(ROUTES_PATH['Bills'])
   }
