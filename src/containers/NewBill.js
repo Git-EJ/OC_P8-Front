@@ -51,10 +51,7 @@ export default class NewBill {
     } 
     // console.log('!!!!!!!!!!!!!!!!!!!!!ELSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     errorMessage.classList.add('hidden')
-    
-
-     // TODO si bon format mais pas de validation, apparait en null dans les notes de frais
-
+  
 
     const formData = new FormData() // créer un objet formData avec paires key/value
     const email = JSON.parse(localStorage.getItem("user")).email 
@@ -83,9 +80,12 @@ export default class NewBill {
         this.fileName = fileName
       // }).catch(error => console.error(error))
       })
-      .catch(error => console.error('===================CATCH handleChangeFile====================', error))
+      .catch(error => {
+        console.error('===================CATCH handleChangeFile====================', error)
+        this.onNavigate(ROUTES_PATH['Error404'], error);
+      })
   }
-  handleSubmit = e => {
+  handleSubmit = async(e) => {
     e.preventDefault()
     // console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
@@ -103,19 +103,28 @@ export default class NewBill {
       status: 'pending'
     }
     // console.log('BILL', bill)
-    this.updateBill(bill)
-    this.onNavigate(ROUTES_PATH['Bills'])
+    const error = await this.updateBill(bill)
+    if (!error) {
+      this.onNavigate(ROUTES_PATH['Bills'])
+    } else {
+      console.error('===================CATCH handleSubmit====================', error)
+      this.onNavigate(ROUTES_PATH['Error500'], error.error);
+    }
   }
 
   // not need to cover this function by tests
-  updateBill = (bill) => {
+  updateBill = async (bill) => {
 
-    this.store && this.store
+    return (this.store && this.store
     .bills()
     .update({data: JSON.stringify(bill), selector: this.billId})
     .then(() => {
-      this.onNavigate(ROUTES_PATH['Bills'])
+      return undefined
     })
-    .catch(error => console.error('===================CATCH HandleSubmit====================', error))
+    .catch(error => {
+      console.error('===================CATCH updateBill====================', error)
+
+      return {error:error}
+    }))
   }
 }

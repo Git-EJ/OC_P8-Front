@@ -3,14 +3,15 @@
  */
 import '@testing-library/jest-dom/extend-expect';
 import { screen, waitFor } from "@testing-library/dom"
-import BillsUI from "../views/BillsUI.js"
-import { bills } from "../fixtures/bills.js"
+import userEvent from "@testing-library/user-event";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
+import { bills } from "../fixtures/bills.js"
 import router from "../app/Router.js";
+import BillsUI from "../views/BillsUI.js"
 import Bills from "../containers/Bills.js";
-import userEvent from "@testing-library/user-event";
-
+import { formatDate, formatStatus } from '../app/format.js';
+import ErrorPage from '../views/ErrorPage.js';
 
 const context = {
   document: document,
@@ -41,12 +42,16 @@ describe("Given I am connected as an employee", () => {
     window.onNavigate(ROUTES_PATH.Bills)
   })
 
+  afterAll (() => {
+    jest.clearAllMocks()
+  })
+  
+
   
   describe("When I am on NewBill Page", ()=> {
     
     test("Then bill icon in vertical layout should be highlighted", async () => {
 
-      // TODO why the beforeAll is not working here ?
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee',
@@ -188,57 +193,78 @@ describe("Given I am connected as an employee", () => {
     test("get bills from mock API GET", async () => {
       const instanceBills = new Bills(context)
       const billsFromInstanceBills = await waitFor(() => instanceBills.getBills())
+            
+      const billType = screen.getAllByTestId('bill-type')
+      const billName = screen.getAllByTestId('bill-name')
+      const billDate = screen.getAllByTestId('bill-date')
+      const billAmount = screen.getAllByTestId('bill-amount')
+      const billStatus = screen.getAllByTestId('bill-status')
+      const billIconEye = screen.getAllByTestId('icon-eye')
+      
       expect(billsFromInstanceBills.length).toEqual(bills.length)
+      expect(billType).toHaveLength(bills.length)
+      expect(billName).toHaveLength(bills.length)
+      expect(billDate).toHaveLength(bills.length)
+      expect(billAmount).toHaveLength(bills.length)
+      expect(billStatus).toHaveLength(bills.length)
+      expect(billIconEye).toHaveLength(bills.length)
+
+      await waitFor(() => expect(billType[0].innerHTML).toBe(billsFromInstanceBills[0].type))
+      await waitFor(() => expect(billName[0].innerHTML).toBe(billsFromInstanceBills[0].name))
+      await waitFor(() => expect(billDate[0].innerHTML).toBe(formatDate(billsFromInstanceBills[0].date)))
+      await waitFor(() => expect(billAmount[0].innerHTML).toBe(`${billsFromInstanceBills[0].amount} €`))
+      await waitFor(() => expect(billStatus[0].innerHTML).toBe(formatStatus(billsFromInstanceBills[0].status)))
+
     })
   })
+  
 
-  
-// TODO this bullshit console log error message is not working
-  // describe("When I am on Bills Page", () => {
-  //   const mockedBills = [
-  //     {
-  //       "id": "47qAXb6fIm2zOKkLzMro",
-  //       "vat": "80",
-  //       "fileUrl": "https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
-  //       "status": "invalid",
-  //       "type": "Hôtel et logement",
-  //       "commentary": "séminaire billed",
-  //       "name": "encore",
-  //       "fileName": "preview-facture-free-201801-pdf-1.jpg",
-  //       "date": "invalid-date",
-  //       "amount": 400,
-  //       "commentAdmin": "ok",
-  //       "email": "a@a",
-  //       "pct": 20
-  //     }
-  //   ];
-  
-  //   beforeEach(() => {
-  //     setContext({
-  //       document,
-  //       onNavigate: (path) => {
-  //         document.body.innerHTML = ROUTES({ pathname: path, data: [] })
-  //       },
-  //       store: {
-  //         bills: jest.fn(() => ({
-  //           list: jest.fn(() => Promise.resolve(mockedBills)),
-  //         })),
-  //       },
-  //       localStorage: window.localStorage,
-  //     });
-  //     document.body.innerHTML = BillsUI({ data: mockedBills })
-  //   });
-  
-  //   afterEach(() => {
-  //     jest.clearAllMocks()
-  //   })
-  
-  //   test("getBills fails catch with error message", async () => {
-  //     const instanceBills = new Bills(context)
-  //     await waitFor(() => instanceBills.getBills)
-  //     console.log = jest.fn();
-  //     await waitFor(() => expect(console.log).toHaveBeenCalled())
-  //   })
-  // })
+  describe("When I am on Bills Page", () => {
+    const mockedBill = [{
+      "id": "47qAXb6fIm2zOKkLzMro",
+      "vat": "80",
+      "fileUrl": "https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
+      "status": "pending",
+      "type": "Hôtel et logement",
+      "commentary": "séminaire billed",
+      "name": "encore",
+      "fileName": "preview-facture-free-201801-pdf-1.jpg",
+      "date": "invalid",
+      "amount": 400,
+      "commentAdmin": "ok",
+      "email": "a@a",
+      "pct": 20
+    }]
+
+    beforeEach(() => {
+      setContext({
+        document,
+        onNavigate : path => { document.body.innerHTML = ROUTES({ pathname:path, data: [] }) },
+        store: {
+          bills: jest.fn(() => ({
+            list: jest.fn(() => Promise.resolve(mockedBill)),
+          })),
+        },
+        localStorage: window.localStorage,
+      })
+      document.body.innerHTML = RangeError ? ErrorPage('mockedError Date') : BillsUI({ data: bills })
+    })
+
+    afterEach (() => {
+      jest.clearAllMocks()
+    })
+    
+    test("get bills catch", async () => {
+      const instanceBills = new Bills(context)
+      instanceBills.getBills()
+
+      console.error = jest.fn()
+      await waitFor(() => expect(console.error).toHaveBeenCalledTimes(1))
+
+      const errorMessage = await waitFor(() => screen.getByTestId('error-message'))
+      await waitFor(() => expect(errorMessage).toBeTruthy()) 
+      await waitFor(() => expect(errorMessage).toHaveTextContent('mockedError Date'))
+    })
+  })
 })
-
+ 

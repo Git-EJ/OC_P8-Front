@@ -56,7 +56,7 @@ export default () => {
                   <div class="col-half">
                     <label for="file" class="bold-label">Justificatif <span class="new-bill_input-file-label">(Format: jpg, jpeg, png)</span></label>
                     <input required type="file" id="new-bill_input-file" class="form-control blue-border" data-testid="file" accept=".jpg, .jpeg, .png" />
-                     <div class="new-bill_input-file_extension-error-message hidden" data-testid="file-error-message">Extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG</div>
+                     <div class="new-bill_input-file_extension-error-message hidden" data-testid="file-error-message">Fichier manquant ou extension de fichier non valide. Sélectionner un fichier JPG, JPEG ou PNG</div>
                   </div>
                 </div>
             </div>

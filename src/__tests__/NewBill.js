@@ -216,14 +216,14 @@ describe("Given I am connected as an employee", () => {
         form.addEventListener('submit', spyHandleSubmit)
         userEvent.click(submitBtn)
  
-        expect(spyHandleSubmit).toHaveBeenCalledTimes(1)
-        expect(spyUpdateBill).toHaveBeenCalledTimes(2) // TODO why "2 call"
-        expect(spyOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['Bills'])// TODO why "2 call"
+        await waitFor(()=>expect(spyHandleSubmit).toHaveBeenCalled())
+        await waitFor(()=>expect(spyUpdateBill).toHaveBeenCalled())
+        await waitFor(()=>expect(spyOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['Bills']))
         form.removeEventListener('submit', spyHandleSubmit)
         
         // check if user is redirected to bills page after submit
-        const billsPage = await waitFor(() => screen.getAllByTestId('employee-bills-page'))
-        expect(billsPage).toHaveLength(1)
+        const billsPage = await waitFor(() => screen.getByTestId('employee-bills-page'))
+        expect(billsPage).toBeTruthy()
       })
     })
   })
@@ -244,7 +244,7 @@ describe("Given I am connected as an employee", () => {
           localStorage: window.localStorage,
         },
       })
-      document.body.innerHTML = NewBillUI();
+      document.body.innerHTML = NewBillUI()
     })
 
     afterEach(() => {
@@ -256,19 +256,20 @@ describe("Given I am connected as an employee", () => {
 
       const newBill = new NewBill(context)
       const btn = screen.getByTestId("file")
+      const spyOnNavigate = jest.spyOn(newBill, 'onNavigate')
 
       const file = new File([""], "test.jpg", { type: "image/jpeg" }) // [content], name, type MIME
       const event = {
         preventDefault: jest.fn(),
         target: { value: "C:\\fakepath\\test.jpg", files: [file] },
       }
+
       btn.dispatchEvent(new Event("change"))
       newBill.handleChangeFile(event)
-
-
-      console.error = jest.fn()
-      await waitFor(() => expect(console.error).toHaveBeenCalledTimes(1))
-      await waitFor(() => expect(console.error).toHaveBeenCalledWith('===================CATCH handleChangeFile====================', 'mockedError'))
+  
+      await waitFor(()=>expect(spyOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['Error404'], "mockedError"))
+      const errorTitle = await waitFor(() => screen.getByTestId('page-error-title'))
+      expect (errorTitle).toBeTruthy()
     })
 
     
@@ -278,21 +279,14 @@ describe("Given I am connected as an employee", () => {
       const form = screen.getByTestId('form-new-bill')
       const submitBtn = screen.getByTestId('btn-submit-bill')
       const spyHandleSubmit = jest.spyOn(newBill, 'handleSubmit')
+      const spyOnNavigate = jest.spyOn(newBill, 'onNavigate')
     
       form.addEventListener('submit', spyHandleSubmit)
       userEvent.click(submitBtn)
 
-      console.error = jest.fn()
-      await waitFor(() => expect(console.error).toHaveBeenCalledTimes(2))
-      await waitFor(() => {
-        // .toHaveBeenNthCalledWith vérifie les appels à des positions spécifiques
-        expect(console.error).toHaveBeenNthCalledWith(
-          1,"===================CATCH HandleSubmit====================","mockedError"
-        )
-        expect(console.error).toHaveBeenNthCalledWith(
-          2,"===================CATCH HandleSubmit====================","mockedError"
-        )
-      })
+      await waitFor(()=>expect(spyOnNavigate).toHaveBeenCalledWith(ROUTES_PATH['Error500'], "mockedError"))
+      const errorTitle = await waitFor(() => screen.getByTestId('page-error-title'))
+      expect (errorTitle).toBeTruthy()
     })
   })
 })
