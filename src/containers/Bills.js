@@ -34,38 +34,30 @@ export default class {
   getBills = () => {
     if (this.store) {
       return this.store
-        .bills()
-        .list()
-        .then(snapshot => {
-          const bills = snapshot // liste de factures 
-            .map(doc => {
-              try {
-                // console.log('docs ===', doc)
-                // console.log('date ===', doc.date)
-                // console.log('status ===', doc.status)
-                // console.log('FD ===', formatDate(doc.date))
-                // doc.date = doc.date.replace(doc.date.valueOf(), '1515-515-511')
-                // doc.status = doc.status.replace('pending', 'pend')
-                formatDate(doc.date),
-                formatStatus(doc.status)
-                return {
-                  ...doc,
-                }
-              } catch (e) {
-                // if for some reason, corrupted data was introduced, we manage here failing formatDate function
-                // log the error and return unformatted date in that case
-                console.error('Error : getBills()', e,'for',doc)
-                return {
-                  ...doc,
-                  date: doc.date,
-                  status: doc.status,
-                }
+      .bills()
+      .list()
+      .then(snapshot => {
+        const bills = snapshot
+          .map(doc => {
+            try {
+              formatDate(doc.date),
+              formatStatus(doc.status)
+              return {
+                ...doc,
               }
-            })
-          // console.log('bills length ===', bills.length)
-          return bills
-        })
-      //TODO ELSE (NO bills ???)
+            } catch (e) {
+              // if for some reason, corrupted data was introduced, we manage here failing formatDate function
+              // log the error and return unformatted date in that case
+              console.error('Error : getBills()', e,'for',doc)
+              return {
+                ...doc,
+                date: doc.date,
+                status: doc.status,
+              }
+            }
+          })
+        return bills
+      })
     } 
   }
 }

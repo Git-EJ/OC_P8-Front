@@ -67,7 +67,7 @@ describe("Given I am connected as an employee", () => {
       await waitFor(() => screen.getByTestId('icon-window'))
       const windowIcon = screen.getByTestId('icon-window')
       expect(windowIcon.classList).toBeTruthy()
-      // console.log(windowIcon)
+   
       expect(windowIcon.classList.contains('active-icon')).toBe(true)
     })
 
@@ -115,14 +115,12 @@ describe("Given I am connected as an employee", () => {
       }
       
       const formatDates = dates.map(d => {
-        // console.log("d===", d)
         const parts = d.split(' ')
         const day = parts[0];
         const month = monthMap[parts[1]]
         const year = parts[2]
       
         const newDate = new Date(`${day} ${month} ${year}`).getTime()
-        // console.log('NewDate ===', newDate)
         return newDate;
       })
       
