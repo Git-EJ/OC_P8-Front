@@ -1,18 +1,17 @@
 import VerticalLayout from './VerticalLayout.js'
 import ErrorPage from "./ErrorPage.js"
 import LoadingPage from "./LoadingPage.js"
-
 import Actions from './Actions.js'
-import { formatDate } from '../app/format.js'
+import { formatDate, formatStatus } from '../app/format.js'
 
 const row = (bill) => {
   return (`
     <tr>
-      <td>${bill.type}</td>
-      <td>${bill.name}</td>
-      <td>${formatDate(bill.date)}</td>
-      <td>${bill.amount} €</td>
-      <td>${bill.status}</td>
+      <td data-testid="bill-type">${bill.type}</td>
+      <td data-testid="bill-name">${bill.name}</td>
+      <td data-testid="bill-date">${formatDate(bill.date)}</td>
+      <td data-testid="bill-amount">${bill.amount} €</td>
+      <td data-testid="bill-status">${formatStatus(bill.status)}</td>
       <td>
         ${Actions(bill.fileUrl)}
       </td>
@@ -21,16 +20,11 @@ const row = (bill) => {
   }
 
 const rows = (data) => {
-  console.log('data ===', data)
   if (!data) return "" //avoid error : "TypeError: data is not iterable"
   const dataDate = [...data]
-  console.log('dataDate ===', dataDate)
   dataDate.sort((a,b)=> { 
-    console.log('a.date ===', a.date)
     const aNewDate = new Date(a.date).getTime()
-    console.log('aNewDate ===', aNewDate + '  ' + a.id)
     const bNewDate = new Date(b.date).getTime()
-    console.log('bNewDate ===', bNewDate + '  ' + b.id)
     return bNewDate - aNewDate
   })
   return dataDate.map(bill => row(bill)).join("")
@@ -62,7 +56,7 @@ export default ({ data: bills, loading, error }) => {
   }
   
   return (`
-    <div class='layout'>
+    <div class='layout' data-testid='employee-bills-page'>
       ${VerticalLayout(120)}
       <div class='content'>
         <div class='content-header'>

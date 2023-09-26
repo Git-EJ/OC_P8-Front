@@ -96,11 +96,6 @@ export default class {
       $('.dashboard-right-container div').html(DashboardFormUI(bill))
       $('.vertical-navbar').css({ height: '150vh' })
       this.counter++
-      console.log("Edit-IF this.counter ===", this.counter)
-      console.log('Show-Counter', showCounter)
-      // console.log('e' , e)
-      // console.log('bill', bill)
-      // console.log('bills', bills)
     } 
     else {
       $(`#open-bill${bill.id}`).css({ background: '#0D5AE5' })
@@ -110,7 +105,6 @@ export default class {
       `)
       $('.vertical-navbar').css({ height: '150vh' }) //MODIF 120 => 150
       this.counter++
-      console.log("Edione this.counter ===", this.counter)
     }
 
     $('#icon-eye-d').on('click', (this.handleClickIconEye))
@@ -146,13 +140,11 @@ export default class {
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
       this.counter ++
-      console.log("Show-IF counter ===", this.counter)
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
       this.counter ++
-      console.log("Show-ELSE 2 counter ===", this.counter)
     }
 
     bills.forEach(bill => {
@@ -192,7 +184,7 @@ export default class {
       .bills()
       .update({data: JSON.stringify(bill), selector: bill.id})
       .then(bill => bill)
-      .catch(console.log('toto'))
+      .catch(console.log('error updateBill'))
     }
   }
 }
