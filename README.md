@@ -1,35 +1,74 @@
-# OC_P9-Front
+<h1>OC_P9</h1>
 
-tickets: https://openclassrooms.notion.site/a7a612fc166747e78d95aa38106a55ec?v=2a8d3553379c4366b6f66490ab8f0b90
+<div align='center'>
 
-## L'architecture du projet :
-Ce projet, dit frontend, est connecté à un service API backend que vous devez aussi lancer en local.
+ <img src="./src/assets/logo/logo.png" alt="Billed Logo" title="Billed Logo" width="115" height="auto" />
 
-Le projet backend se trouve ici: https://github.com/OpenClassrooms-Student-Center/Billed-app-FR-back
+</div><br>
 
-## Organiser son espace de travail :
-Pour une bonne organization, vous pouvez créer un dossier bill-app dans lequel vous allez cloner le projet backend et par la suite, le projet frontend:
+<h2>Billed: Saas Human Resources for employees expenses</h2><br>
 
-Clonez le projet backend dans le dossier bill-app :
-```
-$ git clone https://github.com/OpenClassrooms-Student-Center/Billed-app-FR-Back.git
-```
+Saas for employees parts, allows the entry of expenses.
+Saas for HR employees expenses consultation and validation.
+
+<strong>Back end at:</strong> https://github.com/Git-EJ/OC_P9-Back
+<br>
+
+
+![React Badge](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=000&style=flat)
+![Sass Badge](https://img.shields.io/badge/Sass-C69?logo=sass&logoColor=fff&style=flat)
+![React Router Badge](https://img.shields.io/badge/React%20Router-CA4245?logo=reactrouter&logoColor=fff&style=flat)
+![Jest Badge](https://img.shields.io/badge/Jest-C21325?logo=jest&logoColor=fff&style=flat)
+![Vite Badge](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff&style=flat)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
+
+
+Project: front and back end are provided by OC. 
+
+Project goal: Bug Hunt, Jest: E2E, Unit and integration tests
+
+
+
+<strong>Install dependencies:</strong>
 
 ```
-bill-app/
-   - Billed-app-FR-Back
+npm i
 ```
 
-Clonez le projet frontend dans le dossier bill-app :
-```
-$ git clone https://github.com/OpenClassrooms-Student-Center/Billed-app-FR-Front.git
-```
+<strong>run dev preview:</strong>
 
 ```
-bill-app/
-   - Billed-app-FR-Back
-   - Billed-app-FR-Front
+use live server
 ```
+
+<br>
+
+<strong>Login:</strong>
+
+<strong>administrateur :</strong> 
+```
+utilisateur : admin@company.tld 
+mot de passe : admin
+```
+<strong>employé :</strong>
+```
+utilisateur : employee@company.tld
+mot de passe : employee
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Comment lancer l'application en local ?
 

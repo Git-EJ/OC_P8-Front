@@ -252,7 +252,7 @@ describe("Given I am connected as an employee", () => {
       // jest.resetAllMocks() // Réinitialise les mocks de fonctions seulement
     })
 
-    test("handleChangeFile should call console.error on promise rejection", async () => {
+    test("handleChangeFile should call catch on promise rejection", async () => {
 
       const newBill = new NewBill(context)
       const btn = screen.getByTestId("file")
@@ -273,7 +273,7 @@ describe("Given I am connected as an employee", () => {
     })
 
     
-    test("handleSubmit should call console.error on promise rejection", async () => {
+    test("handleSubmit should call catch on promise rejection", async () => {
 
       const newBill = new NewBill(context)
       const form = screen.getByTestId('form-new-bill')

@@ -252,7 +252,7 @@ describe("Given I am connected as an employee", () => {
       jest.clearAllMocks()
     })
     
-    test("get bills catch", async () => {
+    test("get bills formatDate throw error", async () => {
       const instanceBills = new Bills(context)
       instanceBills.getBills()
 
