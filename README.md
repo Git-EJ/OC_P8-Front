@@ -35,10 +35,10 @@ Saas for HR employees expenses consultation and validation.
 npm i
 ```
 
-<strong>run dev preview:</strong>
+<strong>run sass</strong>
 
 ```
-use live server
+npm run sass
 ```
 
 <br>
